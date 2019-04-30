@@ -1,0 +1,171 @@
+import java.util.Scanner;
+public class App {
+	public static void main(String[] args) {
+		int i,j;
+		int nV=0; char p2='.';
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Please choose an action\n-----------------------\n1- Set a polynomial variable\n2- Print the value of a polynomial variable\n3- Add two polynomials\n4- Subtract two polynomials5- Multiply two polynomials\r\n6- Evaluate a polynomial at some point\r\n7- Clear a polynomial variable");
+		System.out.println("Please don't add spaces :)");
+		 int val=scan.nextInt(); 
+		 if (val!=1){ System.out.println("Not Valid :)"); val=scan.nextInt(); }
+		 while (val!=1) { System.out.println("Not Valid :)"); val=scan.nextInt(); }		 
+		 
+	 System.out.println("Insert the variable name: A, B or C");
+		 char p1 = scan.next().charAt(0); 
+		 System.out.println("Insert the polynomial terms in the form:\n(coeff1, exponent1), (coeff2, exponent2), ..");
+		 String s = scan.next();
+		    int c=0; int tS=0; int tSS=0;
+		    char[] a=s.toCharArray();
+		    
+		    int[][] terms1=new int[a.length][2];
+		    for ( i=0;i<a.length;i++) {
+		    	if (Character.isDigit(a[i])) {
+		    		if (a[i-1]=='-'&&i>0) {
+		    		if (c%2==0) terms1[tS++][0]=-1*Character.getNumericValue(a[i]);
+		    		else    terms1[tSS++][1]=Character.getNumericValue(a[i]);
+		    		c++;
+		    	}
+		    		else {
+		    			if (c%2==0) terms1[tS++][0]=Character.getNumericValue(a[i]);
+			    		else    terms1[tSS++][1]=Character.getNumericValue(a[i]);
+			    		c++;
+		    		}
+		    	}
+		    }
+		    for (  i=0;i<tS;i++) {
+		    	for ( j=0;j<tS-1-i;j++) {
+		    		if (terms1[j][1]<terms1[j+1][1]) {
+						int  temp1 =terms1[j][0]; int temp2=terms1[j][1]; 
+						terms1[j][0]=terms1[j+1][0]; terms1[j][1]=terms1[j+1][1];
+						terms1[j+1][0]=temp1;   terms1[j+1][1]=temp2;
+						
+						
+					}
+		    	}
+		    }
+		    	//we would make linked list for it
+		    poly t=new poly();
+		     t.setPolynomial(p1, terms1);
+		     
+		   //  t.evaluatePolynomial('A',2);
+		    	System.out.println("Polynomial"+ p1 +"is set"); nV++; t.print(p1);
+		    	System.out.println("Please choose an action\n1- Set a polynomial variable, ... etc");
+		      val=scan.nextInt(); 
+		      if (!(val==1||val==6||val==7||val==2)) {  System.out.println("Not Valid :)"); 
+		      val=scan.nextInt(); }
+		      while (!(val==1||val==6||val==7||val==2)) { System.out.println("Not Valid :)"); 
+		      val=scan.nextInt(); }
+		      if (val==6) {
+			  System.out.println("Enter the value :)");
+			  float value=scan.nextFloat();
+			  
+			  t.evaluatePolynomial(p1, value); }
+		      if (val==7) { t.clearPolynomial(p1); nV--; System.out.println("Polynomial was cleared ");	}
+		      if (val==2) t.print(p1);
+				if (val==1){
+				  System.out.println("Insert the variable name: A, B or C");
+			 p2 = scan.next().charAt(0); 
+			if (p2==p1 || (p2!='A'&&p2!='B'&&p2!='C')) {System.out.println("Not valid !"); p2 = scan.next().charAt(0);}
+			while ( (p2==p1 || (p2!='A'&&p2!='B'&&p2!='C'))) { System.out.println("Not valid !"); p2 = scan.next().charAt(0); }
+			System.out.println("Insert the polynomial terms in the form:\n(coeff1, exponent1), (coeff2, exponent2), ..");
+			s = scan.next();
+			c=0;  tS=0;  tSS=0;
+			a=s.toCharArray();
+					   int[][] terms2=new int[a.length][2];
+					    for ( i=0;i<a.length;i++) {
+					    	if (Character.isDigit(a[i])) {
+					    		if (a[i-1]=='-'&&i>0) {
+					    		if (c%2==0) terms2[tS++][0]=-1*Character.getNumericValue(a[i]);
+					    		else    terms2[tSS++][1]=Character.getNumericValue(a[i]);
+					    		c++;
+					    	}
+					    		else {
+					    			if (c%2==0) terms2[tS++][0]=Character.getNumericValue(a[i]);
+						    		else    terms2[tSS++][1]=Character.getNumericValue(a[i]);
+						    		c++;
+					    		}
+					    	}
+					    }
+					    for (  i=0;i<tS;i++) {
+					    	for ( j=0;j<tS-1-i;j++) {
+					    		if (terms2[j][1]<terms2[j+1][1]) {
+									int  temp1 =terms2[j][0]; int temp2=terms2[j][1]; 
+									terms2[j][0]=terms2[j+1][0]; terms2[j][1]=terms2[j+1][1];
+									terms2[j+1][0]=temp1;   terms2[j+1][1]=temp2;
+									
+									
+								}
+					    	}
+					    }
+					    	//we would make linked list for it
+					    t.setPolynomial(p2, terms2);
+				 
+				// t.evaluatePolynomial('B',2);
+					System.out.println("Polynomial"+ p2 +"is set"); nV++;}
+					 System.out.println("Please choose an action\n1- Set a polynomial variable, ... etc");
+					 System.out.println("Enter any other number to terminate :)");
+					 
+					val=scan.nextInt();
+		while (true ) {
+			if (val==1&&nV==3) { System.out.println("only 3 polynomials are allowed to be set :) choose another action"); val=scan.nextInt();  }
+			if (val==1&&(nV==2||nV==1||nV==0))	{
+				System.out.println("Insert the variable name: A, B or C");
+				char p3 = scan.next().charAt(0); 
+				if ((p3==p1 &&nV!=0) || p3==p2 ||(p3!='A'&&p3!='B'&&p3!='C')) {System.out.println("Not valid !"); p3 = scan.next().charAt(0);}
+				while ( (p3==p1 &&nV!=0)||p3==p2|| (p3!='A'&&p3!='B'&&p3!='C')) { System.out.println("Not valid !!"); p3 = scan.next().charAt(0); }
+				System.out.println("Insert the polynomial terms in the form:\n(coeff1, exponent1), (coeff2, exponent2), ..");
+				s = scan.next();
+				c=0;  tS=0;  tSS=0;
+				a=s.toCharArray();
+						  int[][] terms3=new int[a.length][2];
+						    for ( i=0;i<a.length;i++) {
+						    	if (Character.isDigit(a[i])) {
+						    		if (a[i-1]=='-'&&i>0) {
+						    		if (c%2==0) terms3[tS++][0]=-1*Character.getNumericValue(a[i]);
+						    		else    terms3[tSS++][1]=Character.getNumericValue(a[i]);
+						    		c++;
+						    	}
+						    		else {
+						    			if (c%2==0) terms3[tS++][0]=Character.getNumericValue(a[i]);
+							    		else    terms3[tSS++][1]=Character.getNumericValue(a[i]);
+							    		c++;
+						    		}
+						    	}
+						    }
+						    for (  i=0;i<tS;i++) {
+						    	for ( j=0;j<tS-1-i;j++) {
+						    		if (terms3[j][1]<terms3[j+1][1]) {
+										int  temp1 =terms3[j][0]; int temp2=terms3[j][1]; 
+										terms3[j][0]=terms3[j+1][0]; terms3[j][1]=terms3[j+1][1];
+										terms3[j+1][0]=temp1;   terms3[j+1][1]=temp2;
+										
+										
+									}
+						    	}
+						    }
+						    t.setPolynomial(p3, terms3); nV++;
+				
+			}
+			if (val==2) {System.out.println("write name of polynmial to be printed"); char p = scan.next().charAt(0); t.print(p); }
+			if (val==3) { System.out.println("write name of polynmials to be added"); 
+			char p = scan.next().charAt(0);  char q = scan.next().charAt(0); t.add(p,q); }	
+			if (val==4) { System.out.println("write name of polynmials to be subtracted"); 
+			char p = scan.next().charAt(0);  char q = scan.next().charAt(0); t.subtract(p,q); }
+			if (val==5) { System.out.println("write name of polynmials to be multiplied"); 
+			char p = scan.next().charAt(0);  char q = scan.next().charAt(0); t.multiply(p,q); }
+			if (val==6) { System.out.println("write name of polynmial"); char p = scan.next().charAt(0);
+			  System.out.println("Enter the value :)");
+			  float value=scan.nextFloat();      t.evaluatePolynomial(p, value); }
+			if (val==7) { System.out.println("write name of polynmial"); char p = scan.next().charAt(0);
+			t.clearPolynomial(p);	nV--;
+			}
+			else if (val!=1&&val!=2&&val!=3&&val!=4&&val!=5&&val!=6&&val!=7)
+				break;
+			System.out.println("Please choose an action\n1- Set a polynomial variable, ... etc");
+			val=scan.nextInt();
+			
+					}
+							  
+							  
+		}
+}
